@@ -31,17 +31,58 @@ public class XunitDisplayNameMissingAnalyzerTests
         return cSharpAnalyzerTest;
     }
 
-    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when DisplayName is provided, should not issue diagnostic")]
-    public async Task MissingNameAnalyzerWhenDisplayNameIsProvidedShouldNotIssueDiagnostic()
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when DisplayName is provided on Fact, should not issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenDisplayNameIsProvidedOnFactShouldNotIssueDiagnostic()
     {
-        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(MissingNameAnalyzerWhenDisplayNameIsProvidedShouldNotIssueDiagnostic));
+        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenDisplayNameIsProvidedOnFactShouldNotIssueDiagnostic));
 
         var test = TestFactory(code);
         await test.RunAsync();
     }
 
-    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, if qualified name is used, should not issue diagnostic")]
-    public async Task MissingNameAnalyzerIfQualifiedNameIsUsedShouldNotIssueDiagnostic()
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when qualified name is used, should not issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenQualifiedNameIsUsedShouldNotIssueDiagnostic()
+    {
+        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenQualifiedNameIsUsedShouldNotIssueDiagnostic));
+
+        var test = TestFactory(code);
+        await test.RunAsync();
+    }
+
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when attribute string is not trimmed, should not issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenAttributeStringIsNotTrimmedShouldNotIssueDiagnostic()
+    {
+        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenAttributeStringIsNotTrimmedShouldNotIssueDiagnostic));
+
+        var test = TestFactory(code);
+        await test.RunAsync();
+    }
+
+
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when DisplayName is not provided on Fact, should issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnFactShouldIssueDiagnostic()
+    {
+        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnFactShouldIssueDiagnostic));
+
+        await TestFactory(
+            code,
+            Verify.Diagnostic(Diagnostics.FactCheck001XunitDisplayNameMissing).WithLocation(5, 6))
+            .RunAsync();
+    }
+
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when DisplayName is not provided on Theory, should issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnTheoryShouldIssueDiagnostic()
+    {
+        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnTheoryShouldIssueDiagnostic));
+
+        await TestFactory(
+            code,
+            Verify.Diagnostic(Diagnostics.FactCheck001XunitDisplayNameMissing).WithLocation(5, 6))
+            .RunAsync();
+    }
+
+    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when xunit is not referenced, should not issue diagnostic")]
+    public async Task XunitDisplayNameMissingAnalyzerWhenXunitIsNotReferencedShouldNotIssueDiagnostic()
     {
         var code = @"
 using System;
@@ -72,35 +113,6 @@ namespace Classlib.MockProject
 }
         ";
 
-        var test = TestFactory(code);
-        await test.RunAsync();
-    }
-
-    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, if attribute string is not trimmed, should not issue diagnostic")]
-    public async Task MissingNameAnalyzerIfAttributeStringIsNotTrimmedShouldNotIssueDiagnostic()
-    {
-        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(MissingNameAnalyzerIfAttributeStringIsNotTrimmedShouldNotIssueDiagnostic));
-
-        var test = TestFactory(code);
-        await test.RunAsync();
-    }
-
-
-    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when DisplayName is not provided, should issue diagnostic")]
-    public async Task MissingNameAnalyzerWhenDisplayNameIsNotProvidedShouldIssueDiagnostic()
-    {
-        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(MissingNameAnalyzerWhenDisplayNameIsNotProvidedShouldIssueDiagnostic));
-
-        await TestFactory(
-            code,
-            Verify.Diagnostic(Diagnostics.FactCheck001XunitDisplayNameMissing).WithLocation(5, 6))
-            .RunAsync();
-    }
-
-    [Fact(DisplayName = "XunitDisplayNameMissingAnalyzer, when xunit is not referenced, should not issue diagnostic")]
-    public async Task XunitDisplayNameMissingAnalyzerWhenXunitIsNotReferencedShouldNotIssueDiagnostic()
-    {
-        var code = await Helpers.LoadModule(_classlibMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenXunitIsNotReferencedShouldNotIssueDiagnostic));
 
         var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier>()
         {

@@ -29,14 +29,26 @@ public class XunitDisplayNameMissingCodeFixTests
         return cSharpCodeFixTest;
     }
 
-    [Fact(DisplayName = "XunitDisplayNameMissingCodeFix, when DisplayName attribute is missing, will create it")]
-    public async Task XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingWillCreateIt()
+    [Fact(DisplayName = "XunitDisplayNameMissingCodeFix, when DisplayName attribute is missing on Fact, will create it")]
+    public async Task XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt()
     {
         var (testCode, fixedCode) = await (
-            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingWillCreateIt)),
-            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingWillCreateIt))
+            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt)),
+            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt))
         );
         var codeFixTest = TestFactory(testCode, fixedCode);
         await codeFixTest.RunAsync();
     }
+
+    [Fact(DisplayName = "XunitDisplayNameMissingCodeFix, when DisplayName attribute is missing on Theory, will create it")]
+    public async Task XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt()
+    {
+        var (testCode, fixedCode) = await (
+            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt)),
+            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt))
+        );
+        var codeFixTest = TestFactory(testCode, fixedCode);
+        await codeFixTest.RunAsync();
+    }
+
 }

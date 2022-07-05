@@ -11,11 +11,18 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
 {
     private const string _assemblyXunitCore = "xunit.core";
     private const string _attributeFact = "FactAttribute";
-    private const string _namespaceAttributeFact = "Xunit";
+    private const string _attributeTheory = "TheoryAttribute";
+    private const string _namespaceAttributes = "Xunit";
     private const string _propertyDisplayName = "DisplayName";
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(
         Diagnostics.FactCheck001XunitDisplayNameMissing
     );
+
+    private static readonly HashSet<string> _displayNameAttributes = new()
+    {
+        _attributeFact,
+        _attributeTheory
+    };
 
     public override void Initialize(AnalysisContext context)
     {
@@ -35,7 +42,7 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
             .SyntaxTree
             .GetRoot()
             .DescendantNodes().OfType<AttributeSyntax>()
-            .Where(attributeSyntax => IsXunitFactAttribute(attributeSyntax, semanticModel))
+            .Where(attributeSyntax => IsAttributeWithDisplayName(attributeSyntax, semanticModel))
             .Where(attributeSyntax => !HasDisplayName(attributeSyntax));
 
         foreach (var attributeSyntax in attributeSyntaxes)
@@ -52,7 +59,7 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
         .Where(nameEqualsSyntax => nameEqualsSyntax.Name.Identifier.Text == _propertyDisplayName)
         .Any() ?? false;
 
-    private static bool IsXunitFactAttribute(AttributeSyntax attributeSyntax, SemanticModel semanticModel)
+    private static bool IsAttributeWithDisplayName(AttributeSyntax attributeSyntax, SemanticModel semanticModel)
     {
         if (semanticModel.GetSymbolInfo(attributeSyntax).Symbol is not IMethodSymbol methodSymbol)
         {
@@ -62,7 +69,7 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
         return containingType is not null
             && methodSymbol.MethodKind == MethodKind.Constructor
             && containingType.ContainingAssembly.Name == _assemblyXunitCore
-            && containingType.Name == _attributeFact
-            && containingType.ContainingNamespace.Name == _namespaceAttributeFact;
+            && _displayNameAttributes.Contains(containingType.Name)
+            && containingType.ContainingNamespace.Name == _namespaceAttributes;
     }
 }
