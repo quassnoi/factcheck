@@ -51,4 +51,30 @@ public class XunitDisplayNameMissingCodeFixTests
         await codeFixTest.RunAsync();
     }
 
+    [Theory(DisplayName = "XunitDisplayNameMissingCodeFix, when method name has case, will split words")]
+    [InlineData("Initcase", "Initcase")]
+    [InlineData("UPPERCASE", "UPPERCASE")]
+    [InlineData("lowercase", "Lowercase")]
+    [InlineData("camelCase", "Camel case")]
+    [InlineData("PascalCase", "Pascal case")]
+    [InlineData("snake_case", "Snake case")]
+    [InlineData("camelPascal_snakeMixed", "Camel pascal snake mixed")]
+    [InlineData("ALLCapsPreserved", "ALL caps preserved")]
+    public async Task XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords(string testMethodName, string displayNameValue)
+    {
+        var (rawTestCode, rawFixedCode) = await (
+            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords)),
+            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords))
+        );
+
+        var testCode = rawTestCode.Replace("TestMethodName", testMethodName);
+        var fixedCode = rawFixedCode
+            .Replace("TestMethodName", testMethodName)
+            .Replace("DisplayNameValue", displayNameValue);
+
+        var codeFixTest = TestFactory(testCode, fixedCode);
+        await codeFixTest.RunAsync();
+
+    }
+
 }

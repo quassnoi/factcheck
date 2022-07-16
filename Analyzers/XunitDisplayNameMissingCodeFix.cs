@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using FactCheck.Common;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -73,7 +74,7 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
                 null,
                 SyntaxFactory.LiteralExpression(
                     SyntaxKind.StringLiteralExpression,
-                    SyntaxFactory.Literal(methodName)
+                    SyntaxFactory.Literal(Converters.CodeToText(methodName))
                     )
                 )
             );
