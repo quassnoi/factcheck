@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+using MoreLinq.Extensions;
 
 namespace FactCheck.Common
 {
@@ -12,9 +14,62 @@ namespace FactCheck.Common
                 .Select((chunk, index) => AllCapsRegex.IsMatch(chunk) ?
                         chunk :
                         index == 0 ?
-                            System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(chunk) :
-                            System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToLower(chunk))
+                            CultureInfo.InvariantCulture.TextInfo.ToTitleCase(chunk) :
+                            CultureInfo.InvariantCulture.TextInfo.ToLower(chunk))
                 );
+
+        public enum NonLatinStrategy
+        {
+            Skip,
+            Decline,
+            Hash
+        }
+
+        public enum LeadingDigitStrategy
+        {
+            Skip,
+            Decline,
+            SpellFirst,
+            SpellAll
+        }
+
+        public static string TextToCode(string text, NonLatinStrategy nonLatinStrategy = NonLatinStrategy.Skip, LeadingDigitStrategy leadingDigitStrategy = LeadingDigitStrategy.Skip)
+            => string.Join(
+                string.Empty,
+                BreakByCodeCharacterClass(text)
+                    .Select(CultureInfo.InvariantCulture.TextInfo.ToTitleCase)
+                );
+
+        private enum CodeCharacterClass
+        {
+            Skip,
+            Other,
+            Letter,
+            Digit,
+        }
+
+        private static CodeCharacterClass GetCodeCharacterClass(char character)
+        {
+            if (!char.IsLetterOrDigit(character))
+            {
+                return CodeCharacterClass.Skip;
+            }
+            if (character >= 0x80)
+            {
+                return CodeCharacterClass.Other;
+            }
+            return char.IsLetter(character) ? CodeCharacterClass.Letter : CodeCharacterClass.Digit;
+        }
+
+        private static IEnumerable<string> BreakByCodeCharacterClass(string text)
+            => text.GroupAdjacent(GetCodeCharacterClass)
+                .Where(group => group.Key != CodeCharacterClass.Skip)
+                .Select(group => string.Concat(group));
+
+        private static IEnumerable<string> HandleNonLatinStrategy(this IEnumerable<string> chunks, NonLatinStrategy nonLatinStrategy)
+        {
+            return chunks.
+        }
 
         public static IEnumerable<string> SplitCode(string code)
         {

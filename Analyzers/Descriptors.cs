@@ -20,13 +20,23 @@ internal static class Diagnostics
             defaultSeverity,
             isEnabledByDefault,
             description);
-    public static readonly DiagnosticDescriptor FactCheck001XunitDisplayNameMissing = Factory(
+    public static readonly DiagnosticDescriptor FactCheck0001XunitDisplayNameMissing = Factory(
         "FACTCHECK0001",
         "DisplayName missing",
         "DisplayName missing",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,
-        "Fact attribute should have a DisplayName argument."
+        "[Fact] and [Theory] attributes should have a DisplayName argument."
+    );
+
+    public static readonly DiagnosticDescriptor FactCheck0002XunitDisplayNameMismatch = Factory(
+        "FACTCHECK0002",
+        "The method name does not match DisplayName",
+        "The method name does not match DisplayName",
+        "XUnit",
+        DiagnosticSeverity.Warning,
+        true,
+        "The test method name does not match the DisplayName argument."
     );
 }

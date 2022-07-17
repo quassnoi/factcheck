@@ -66,7 +66,7 @@ public class XunitDisplayNameMissingAnalyzerTests
 
         await TestFactory(
             code,
-            Verify.Diagnostic(Diagnostics.FactCheck001XunitDisplayNameMissing).WithLocation(5, 6))
+            Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
             .RunAsync();
     }
 
@@ -77,7 +77,7 @@ public class XunitDisplayNameMissingAnalyzerTests
 
         await TestFactory(
             code,
-            Verify.Diagnostic(Diagnostics.FactCheck001XunitDisplayNameMissing).WithLocation(5, 6))
+            Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
             .RunAsync();
     }
 

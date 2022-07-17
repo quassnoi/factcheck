@@ -11,14 +11,14 @@ namespace FactCheck;
 internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
-        Diagnostics.FactCheck001XunitDisplayNameMissing.Id
+        Diagnostics.FactCheck0001XunitDisplayNameMissing.Id
     );
 
     public override FixAllProvider? GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        var diagnostics = context.Diagnostics.Where(diagnostic => diagnostic.Id == Diagnostics.FactCheck001XunitDisplayNameMissing.Id).ToImmutableList();
+        var diagnostics = context.Diagnostics.Where(diagnostic => diagnostic.Id == Diagnostics.FactCheck0001XunitDisplayNameMissing.Id).ToImmutableList();
 
         if (diagnostics.Count == 0)
         {
@@ -46,7 +46,7 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
             {
                 Parent.Parent: MethodDeclarationSyntax
                 {
-                    Identifier.Text: var methodName
+                    Identifier.Text: string methodName
                 }
 
             } attributeSyntax)
