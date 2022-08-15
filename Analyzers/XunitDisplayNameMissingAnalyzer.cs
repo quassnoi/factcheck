@@ -26,6 +26,7 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
         {
             return;
         }
+
         var attributeSyntaxes = semanticModel
             .GetAttributesSupportingDisplayName()
             .Where(attributeSyntax => !attributeSyntax.HasDisplayName());
@@ -35,5 +36,4 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
             context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0001XunitDisplayNameMissing, attributeSyntax.GetLocation()));
         }
     }
-
 }

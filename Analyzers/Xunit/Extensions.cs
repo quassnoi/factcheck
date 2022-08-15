@@ -7,24 +7,24 @@ namespace FactCheck.Xunit;
 internal static class Extensions
 {
     public static bool HasDisplayName(this AttributeSyntax attributeSyntax)
-    => attributeSyntax
-        .ArgumentList?
-        .Arguments
-        .Any(argument => argument is { NameEquals.Name.Identifier.Text: Constants.PropertyDisplayName }) ?? false;
+        => attributeSyntax
+            .ArgumentList?
+            .Arguments
+            .Any(argument => argument is { NameEquals.Name.Identifier.Text: Constants.PropertyDisplayName }) ?? false;
 
     private static bool SupportsDisplayName(this AttributeSyntax attributeSyntax, SemanticModel semanticModel)
         => semanticModel.GetSymbolInfo(attributeSyntax) is
         {
             Symbol: IMethodSymbol
-            {
-                MethodKind: MethodKind.Constructor,
-                ContainingType:
-                {
-                    ContainingAssembly.Name: Constants.AssemblyXunitCore,
-                    ContainingNamespace.Name: Constants.NamespaceAttributes,
-                    Name: var containingTypeName
-                }
-            }
+                    {
+                        MethodKind: MethodKind.Constructor,
+                        ContainingType:
+                        {
+                            ContainingAssembly.Name: Constants.AssemblyXunitCore,
+                            ContainingNamespace.Name: Constants.NamespaceAttributes,
+                            Name: var containingTypeName
+                        }
+                    }
         } && Constants.DisplayNameAttributes.Contains(containingTypeName);
 
     public static IEnumerable<AttributeSyntax> GetAttributesSupportingDisplayName(this SemanticModel semanticModel)
@@ -35,7 +35,7 @@ internal static class Extensions
             .Where(attributeSyntax => attributeSyntax.SupportsDisplayName(semanticModel));
 
     public static bool HasXunit(this SemanticModel semanticModel)
-    => semanticModel
+        => semanticModel
             .Compilation
             .ReferencedAssemblyNames
             .Any(assemblyIdentity => assemblyIdentity.Name == Constants.AssemblyXunitCore);
@@ -44,10 +44,12 @@ internal static class Extensions
         => attributeSyntax is
         {
             Parent.Parent: MethodDeclarationSyntax
-            {
-                Identifier: var identifier
-            }
-        } ? identifier : null;
+                           {
+                               Identifier: var identifier
+                           }
+        }
+            ? identifier
+            : null;
 
     public static LiteralExpressionSyntax? GetDisplayNameExpression(this AttributeSyntax attributeSyntax)
         => attributeSyntax
@@ -66,7 +68,9 @@ internal static class Extensions
                 RawKind: (int)SyntaxKind.StringLiteralToken,
                 Value: string displayName
             }
-        } ? displayName : null;
+        }
+            ? displayName
+            : null;
 
     public static string? GetDisplayName(this AttributeSyntax attributeSyntax)
         => attributeSyntax.GetDisplayNameExpression().GetDisplayName();

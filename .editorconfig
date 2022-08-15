@@ -12,6 +12,13 @@ max_line_length = 180
 
 resharper_convert_type_check_pattern_to_null_check_highlighting = none
 
+csharp_wrap_before_arrow_with_expressions = true
+csharp_prefer_braces = true
+csharp_style_expression_bodied_methods = true
+place_simple_blocks_on_single_line = false
+csharp_align_multiline_parameter = true
+csharp_align_multiline_property_pattern = true
+
 [*.cs]
 indent_size = 4
 csharp_preserve_single_line_blocks = true

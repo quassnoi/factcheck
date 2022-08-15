@@ -13,18 +13,19 @@ public class XunitDisplayNameMismatchAnalyzerTests
 
     private static CSharpAnalyzerTest<XunitDisplayNameMismatchAnalyzer, XUnitVerifier> TestFactory(string code, params DiagnosticResult[] diagnosticResults)
     {
-        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMismatchAnalyzer, XUnitVerifier>()
+        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMismatchAnalyzer, XUnitVerifier>
         {
             ReferenceAssemblies = ReferenceAssemblies.Default.AddPackages(
                 ImmutableArray.Create(
                     new PackageIdentity("xunit", "2.4.1")
                 )),
-            TestState = {
+            TestState =
+            {
                 Sources =
                 {
                     code
                 }
-            },
+            }
         };
 
         cSharpAnalyzerTest.ExpectedDiagnostics.AddRange(diagnosticResults);
@@ -45,8 +46,8 @@ public class XunitDisplayNameMismatchAnalyzerTests
         var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameDoesNotMatchMethodNameShouldIssueDiagnostic));
 
         await TestFactory(
-            code,
-            Verify.Diagnostic(Diagnostics.FactCheck0002XunitDisplayNameMismatch).WithLocation(6, 17))
+                code,
+                Verify.Diagnostic(Diagnostics.FactCheck0002XunitDisplayNameMismatch).WithLocation(6, 17))
             .RunAsync();
     }
 }

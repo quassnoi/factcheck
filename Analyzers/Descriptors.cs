@@ -4,22 +4,6 @@ namespace FactCheck;
 
 internal static class Diagnostics
 {
-    private static DiagnosticDescriptor Factory(
-        string id,
-        string title,
-        string messageFormat,
-        string category,
-        DiagnosticSeverity defaultSeverity,
-        bool isEnabledByDefault,
-        string description)
-        => new(
-            id,
-            title,
-            messageFormat,
-            category,
-            defaultSeverity,
-            isEnabledByDefault,
-            description);
     public static readonly DiagnosticDescriptor FactCheck0001XunitDisplayNameMissing = Factory(
         "FACTCHECK0001",
         "DisplayName missing",
@@ -50,4 +34,20 @@ internal static class Diagnostics
         "DisplayName contains characters that cannot be converted to a valid C# method name identifier."
     );
 
+    private static DiagnosticDescriptor Factory(
+        string id,
+        string title,
+        string messageFormat,
+        string category,
+        DiagnosticSeverity defaultSeverity,
+        bool isEnabledByDefault,
+        string description)
+        => new(
+            id,
+            title,
+            messageFormat,
+            category,
+            defaultSeverity,
+            isEnabledByDefault,
+            description);
 }

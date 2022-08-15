@@ -5,10 +5,11 @@ using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
 namespace FactCheck.Analyzers.Tests;
+
 public class XunitDisplayNameMissingCodeFixTests
 {
-    private readonly string _xunitMockProjectPath = Path.Combine("MockProjects", "Xunit.MockProject");
     private readonly string _xunitMockProjectFixedPath = Path.Combine("MockProjects", "Xunit.MockProject.Fixed");
+    private readonly string _xunitMockProjectPath = Path.Combine("MockProjects", "Xunit.MockProject");
 
 
     private static CSharpCodeFixTest<XunitDisplayNameMissingAnalyzer, XunitDisplayNameMissingCodeFix, XUnitVerifier> TestFactory(
@@ -16,7 +17,7 @@ public class XunitDisplayNameMissingCodeFixTests
         string fixedCode,
         params DiagnosticResult[] diagnosticResults)
     {
-        var cSharpCodeFixTest = new CSharpCodeFixTest<XunitDisplayNameMissingAnalyzer, XunitDisplayNameMissingCodeFix, XUnitVerifier>()
+        var cSharpCodeFixTest = new CSharpCodeFixTest<XunitDisplayNameMissingAnalyzer, XunitDisplayNameMissingCodeFix, XUnitVerifier>
         {
             ReferenceAssemblies = ReferenceAssemblies.Default.AddPackages(
                 ImmutableArray.Create(
@@ -75,7 +76,5 @@ public class XunitDisplayNameMissingCodeFixTests
 
         var codeFixTest = TestFactory(testCode, fixedCode);
         await codeFixTest.RunAsync();
-
     }
-
 }

@@ -44,9 +44,9 @@ public class XunitDisplayNameMismatchAnalyzer : DiagnosticAnalyzer
         foreach (var attributeSyntax in attributeSyntaxes)
         {
             if (attributeSyntax.GetDisplayName() is string displayName
-                    && attributeSyntax.GetMethodIdentifier() is SyntaxToken methodIdentifier
-                    && Converters.TextToCode(displayName) is string convertedMethodName
-                    && convertedMethodName != methodIdentifier.Text)
+                && attributeSyntax.GetMethodIdentifier() is SyntaxToken methodIdentifier
+                && Converters.TextToCode(displayName) is string convertedMethodName
+                && convertedMethodName != methodIdentifier.Text)
             {
                 yield return methodIdentifier;
             }

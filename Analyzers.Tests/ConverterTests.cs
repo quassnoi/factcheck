@@ -29,5 +29,4 @@ public class ConverterTests
         var actualOutput = Converters.SplitText(input);
         actualOutput.Should().Equal(expectedOutput);
     }
-
 }

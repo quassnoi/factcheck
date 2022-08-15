@@ -36,7 +36,6 @@ public class XunitDisplayNameUnconvertibleAnalyzer : DiagnosticAnalyzer
         foreach (var literalExpressionSyntax in Unconvertible(attributeSyntaxes))
         {
             context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible, literalExpressionSyntax.GetLocation()));
-
         }
     }
 
@@ -45,11 +44,10 @@ public class XunitDisplayNameUnconvertibleAnalyzer : DiagnosticAnalyzer
         foreach (var attributeSyntax in attributeSyntaxes)
         {
             if (attributeSyntax.GetDisplayNameExpression() is LiteralExpressionSyntax literalExpressionSyntax
-                    && (literalExpressionSyntax.GetDisplayName() is not string displayName || Converters.TextToCode(displayName) is null))
+                && (literalExpressionSyntax.GetDisplayName() is not string displayName || Converters.TextToCode(displayName) is null))
             {
                 yield return literalExpressionSyntax;
             }
         }
     }
-
 }

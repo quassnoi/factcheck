@@ -13,18 +13,19 @@ public class XunitDisplayNameMissingAnalyzerTests
 
     private static CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier> TestFactory(string code, params DiagnosticResult[] diagnosticResults)
     {
-        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier>()
+        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier>
         {
             ReferenceAssemblies = ReferenceAssemblies.Default.AddPackages(
                 ImmutableArray.Create(
                     new PackageIdentity("xunit", "2.4.1")
                 )),
-            TestState = {
+            TestState =
+            {
                 Sources =
                 {
                     code
                 }
-            },
+            }
         };
 
         cSharpAnalyzerTest.ExpectedDiagnostics.AddRange(diagnosticResults);
@@ -65,8 +66,8 @@ public class XunitDisplayNameMissingAnalyzerTests
         var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnFactShouldIssueDiagnostic));
 
         await TestFactory(
-            code,
-            Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
+                code,
+                Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
             .RunAsync();
     }
 
@@ -76,8 +77,8 @@ public class XunitDisplayNameMissingAnalyzerTests
         var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingAnalyzerWhenDisplayNameIsNotProvidedOnTheoryShouldIssueDiagnostic));
 
         await TestFactory(
-            code,
-            Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
+                code,
+                Verify.Diagnostic(Diagnostics.FactCheck0001XunitDisplayNameMissing).WithLocation(5, 6))
             .RunAsync();
     }
 
@@ -114,15 +115,16 @@ namespace Classlib.MockProject
         ";
 
 
-        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier>()
+        var cSharpAnalyzerTest = new CSharpAnalyzerTest<XunitDisplayNameMissingAnalyzer, XUnitVerifier>
         {
             ReferenceAssemblies = ReferenceAssemblies.Default.AddAssemblies(ImmutableArray.Create("System.Runtime")),
-            TestState = {
+            TestState =
+            {
                 Sources =
                 {
                     code
                 }
-            },
+            }
         };
 
         await cSharpAnalyzerTest.RunAsync();

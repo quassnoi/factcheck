@@ -43,13 +43,12 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
         var diagnosticNode = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
         if (diagnosticNode is not AttributeSyntax
-            {
-                Parent.Parent: MethodDeclarationSyntax
-                {
-                    Identifier.Text: string methodName
-                }
-
-            } attributeSyntax)
+                                  {
+                                      Parent.Parent: MethodDeclarationSyntax
+                                                     {
+                                                         Identifier.Text: string methodName
+                                                     }
+                                  } attributeSyntax)
         {
             return;
         }
@@ -60,7 +59,6 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
                 _ => CreateFixedDocument(context.Document, syntaxRoot, attributeSyntax, methodName),
                 CodeFixes.FactCheck001XunitDisplayNameMissing.EquivalenceKey),
             diagnostic);
-
     }
 
     private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, AttributeSyntax attributeSyntax, string methodName)
@@ -70,14 +68,14 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
                 SyntaxFactory.NameEquals(
                     SyntaxFactory.IdentifierName("DisplayName"),
                     SyntaxFactory.Token(SyntaxKind.EqualsToken)
-                    ),
+                ),
                 null,
                 SyntaxFactory.LiteralExpression(
                     SyntaxKind.StringLiteralExpression,
                     SyntaxFactory.Literal(Converters.CodeToText(methodName))
-                    )
                 )
-            );
+            )
+        );
         var newSyntaxRoot = syntaxRoot.ReplaceNode(attributeSyntax, newAttributeSyntax);
         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
     }
