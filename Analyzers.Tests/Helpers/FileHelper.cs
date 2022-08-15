@@ -1,8 +1,8 @@
-namespace FactCheck.Analyzers.Tests;
+namespace FactCheck.Analyzers.Tests.Helpers;
 
-internal static class Helpers
+internal static class FileHelper
 {
-    public static async Task<string> LoadCode(string path, string file, CancellationToken cancellationToken = default)
+    private static async Task<string> LoadCode(string path, string file, CancellationToken cancellationToken = default)
     {
         var code = await File.ReadAllTextAsync(Path.Combine(path, file), cancellationToken);
         return code.Replace("/*[|*/", "[|").Replace("/*|]*/", "|]");

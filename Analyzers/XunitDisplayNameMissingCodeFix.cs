@@ -14,7 +14,7 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
         Diagnostics.FactCheck0001XunitDisplayNameMissing.Id
     );
 
-    public override FixAllProvider? GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+    public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {

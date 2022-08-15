@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using FactCheck.Analyzers.Tests.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
@@ -33,8 +34,8 @@ public class XunitDisplayNameMissingCodeFixTests
     public async Task XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt()
     {
         var (testCode, fixedCode) = await (
-            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt)),
-            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt))
+            FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt)),
+            FileHelper.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnFactWillCreateIt))
         );
         var codeFixTest = TestFactory(testCode, fixedCode);
         await codeFixTest.RunAsync();
@@ -44,8 +45,8 @@ public class XunitDisplayNameMissingCodeFixTests
     public async Task XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt()
     {
         var (testCode, fixedCode) = await (
-            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt)),
-            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt))
+            FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt)),
+            FileHelper.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenDisplayNameAttributeIsMissingOnTheoryWillCreateIt))
         );
         var codeFixTest = TestFactory(testCode, fixedCode);
         await codeFixTest.RunAsync();
@@ -63,8 +64,8 @@ public class XunitDisplayNameMissingCodeFixTests
     public async Task XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords(string testMethodName, string displayNameValue)
     {
         var (rawTestCode, rawFixedCode) = await (
-            Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords)),
-            Helpers.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords))
+            FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords)),
+            FileHelper.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords))
         );
 
         var testCode = rawTestCode.Replace("TestMethodName", testMethodName);

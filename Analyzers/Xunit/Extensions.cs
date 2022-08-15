@@ -12,7 +12,7 @@ internal static class Extensions
         .Arguments
         .Any(argument => argument is { NameEquals.Name.Identifier.Text: Constants.PropertyDisplayName }) ?? false;
 
-    public static bool IsAttributeWithDisplayName(this AttributeSyntax attributeSyntax, SemanticModel semanticModel)
+    private static bool SupportsDisplayName(this AttributeSyntax attributeSyntax, SemanticModel semanticModel)
         => semanticModel.GetSymbolInfo(attributeSyntax) is
         {
             Symbol: IMethodSymbol
@@ -26,6 +26,13 @@ internal static class Extensions
                 }
             }
         } && Constants.DisplayNameAttributes.Contains(containingTypeName);
+
+    public static IEnumerable<AttributeSyntax> GetAttributesSupportingDisplayName(this SemanticModel semanticModel)
+        => semanticModel
+            .SyntaxTree
+            .GetRoot()
+            .DescendantNodes().OfType<AttributeSyntax>()
+            .Where(attributeSyntax => attributeSyntax.SupportsDisplayName(semanticModel));
 
     public static bool HasXunit(this SemanticModel semanticModel)
     => semanticModel
@@ -42,39 +49,25 @@ internal static class Extensions
             }
         } ? identifier : null;
 
-    public static string? GetMethodName(this AttributeSyntax attributeSyntax)
-        => attributeSyntax.GetMethodIdentifier()?.Text;
-
-    public static string? GetDisplayName(this AttributeSyntax attributeSyntax)
+    public static LiteralExpressionSyntax? GetDisplayNameExpression(this AttributeSyntax attributeSyntax)
         => attributeSyntax
             .ArgumentList?
             .Arguments
             .Where(argument => argument is { NameEquals.Name.Identifier.Text: Constants.PropertyDisplayName })
-            .Select(argument => argument is
-            {
-                Expression: LiteralExpressionSyntax
-                {
-                    Token:
-                    {
-                        RawKind: (int)SyntaxKind.StringLiteralToken,
-                        Value: string displayName
-                    }
-                }
-            } ? displayName : null
-            )
+            .Select(argument => argument.Expression)
+            .OfType<LiteralExpressionSyntax>()
             .FirstOrDefault();
 
-    public static IEnumerable<(string displayName, string methodName)> GetAttributesNames(this IEnumerable<AttributeSyntax> attributeSyntaxes)
-    {
-        foreach (var attributeSyntax in attributeSyntaxes)
+    public static string? GetDisplayName(this LiteralExpressionSyntax? literalExpressionSyntax)
+        => literalExpressionSyntax is
         {
-            if (attributeSyntax.GetDisplayName() is string displayName && attributeSyntax.GetMethodName() is string methodName)
+            Token:
             {
-                yield return (displayName, methodName);
+                RawKind: (int)SyntaxKind.StringLiteralToken,
+                Value: string displayName
             }
-        }
-    }
+        } ? displayName : null;
 
-
-
+    public static string? GetDisplayName(this AttributeSyntax attributeSyntax)
+        => attributeSyntax.GetDisplayNameExpression().GetDisplayName();
 }

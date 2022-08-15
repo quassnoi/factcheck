@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using FactCheck.Xunit;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace FactCheck;
@@ -28,10 +27,7 @@ public class XunitDisplayNameMissingAnalyzer : DiagnosticAnalyzer
             return;
         }
         var attributeSyntaxes = semanticModel
-            .SyntaxTree
-            .GetRoot()
-            .DescendantNodes().OfType<AttributeSyntax>()
-            .Where(attributeSyntax => attributeSyntax.IsAttributeWithDisplayName(semanticModel))
+            .GetAttributesSupportingDisplayName()
             .Where(attributeSyntax => !attributeSyntax.HasDisplayName());
 
         foreach (var attributeSyntax in attributeSyntaxes)

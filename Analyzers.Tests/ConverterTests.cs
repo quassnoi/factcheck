@@ -16,16 +16,17 @@ public class ConverterTests
         actualOutput.Should().Equal(expectedOutput);
     }
 
-    [Theory(DisplayName = "BreakByCodeCharacterClass, when given text, should break by class")]
+    [Theory(DisplayName = "SplitText, when given text, should split")]
     [InlineData("latin", new[] { "latin" })]
     [InlineData("123", new[] { "123" })]
     [InlineData("one_two", new[] { "one", "two" })]
     [InlineData("one, two! three+four", new[] { "one", "two", "three", "four" })]
     [InlineData("abc123", new[] { "abc", "123" })]
-    [InlineData("latinкириллица", new[] { "latin", "кириллица" })]
-    public void BreakByCodeCharacterClassWhenGivenTextShouldBreakByClass(string input, IEnumerable<string> expectedOutput)
+    [InlineData("latin кириллица", new[] { "latin", "кириллица" })]
+    [InlineData("_", new string[] { })]
+    public void SplitTextWhenGivenTextShouldSplit(string input, IEnumerable<string> expectedOutput)
     {
-        var actualOutput = Converters.BreakByCodeCharacterClass(input);
+        var actualOutput = Converters.SplitText(input);
         actualOutput.Should().Equal(expectedOutput);
     }
 

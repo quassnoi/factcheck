@@ -1,3 +1,5 @@
+namespace FactCheck;
+
 internal readonly record struct CodeFixData(string Title, string EquivalenceKey);
 
 internal static class CodeFixes

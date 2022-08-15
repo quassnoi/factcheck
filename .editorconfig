@@ -10,9 +10,12 @@ trim_trailing_whitespace = false
 insert_final_newline = false
 max_line_length = 180
 
+resharper_convert_type_check_pattern_to_null_check_highlighting = none
+
 [*.cs]
 indent_size = 4
 csharp_preserve_single_line_blocks = true
 
 [*.xml,*.csproj]
 indent_size = 2
+

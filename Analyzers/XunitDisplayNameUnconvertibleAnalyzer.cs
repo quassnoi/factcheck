@@ -8,10 +8,10 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace FactCheck;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class XunitDisplayNameMismatchAnalyzer : DiagnosticAnalyzer
+public class XunitDisplayNameUnconvertibleAnalyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(
-        Diagnostics.FactCheck0002XunitDisplayNameMismatch
+        Diagnostics.FactCheck0003XunitDisplayNameUnconvertible
     );
 
     public override void Initialize(AnalysisContext context)
@@ -33,23 +33,23 @@ public class XunitDisplayNameMismatchAnalyzer : DiagnosticAnalyzer
             .GetAttributesSupportingDisplayName()
             .Where(attributeSyntax => attributeSyntax.HasDisplayName());
 
-        foreach (var methodIdentifier in Mismatches(attributeSyntaxes))
+        foreach (var literalExpressionSyntax in Unconvertible(attributeSyntaxes))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0002XunitDisplayNameMismatch, methodIdentifier.GetLocation()));
+            context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible, literalExpressionSyntax.GetLocation()));
+
         }
     }
 
-    private static IEnumerable<SyntaxToken> Mismatches(IEnumerable<AttributeSyntax> attributeSyntaxes)
+    private static IEnumerable<LiteralExpressionSyntax> Unconvertible(IEnumerable<AttributeSyntax> attributeSyntaxes)
     {
         foreach (var attributeSyntax in attributeSyntaxes)
         {
-            if (attributeSyntax.GetDisplayName() is string displayName
-                    && attributeSyntax.GetMethodIdentifier() is SyntaxToken methodIdentifier
-                    && Converters.TextToCode(displayName) is string convertedMethodName
-                    && convertedMethodName != methodIdentifier.Text)
+            if (attributeSyntax.GetDisplayNameExpression() is LiteralExpressionSyntax literalExpressionSyntax
+                    && (literalExpressionSyntax.GetDisplayName() is not string displayName || Converters.TextToCode(displayName) is null))
             {
-                yield return methodIdentifier;
+                yield return literalExpressionSyntax;
             }
         }
     }
+
 }

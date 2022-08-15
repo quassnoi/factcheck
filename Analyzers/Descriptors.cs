@@ -23,7 +23,7 @@ internal static class Diagnostics
     public static readonly DiagnosticDescriptor FactCheck0001XunitDisplayNameMissing = Factory(
         "FACTCHECK0001",
         "DisplayName missing",
-        "DisplayName missing",
+        "DisplayName",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,
@@ -33,10 +33,21 @@ internal static class Diagnostics
     public static readonly DiagnosticDescriptor FactCheck0002XunitDisplayNameMismatch = Factory(
         "FACTCHECK0002",
         "The method name does not match DisplayName",
-        "The method name does not match DisplayName",
+        "DisplayName",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,
         "The test method name does not match the DisplayName argument."
     );
+
+    public static readonly DiagnosticDescriptor FactCheck0003XunitDisplayNameUnconvertible = Factory(
+        "FACTCHECK0003",
+        "DisplayName cannot be converted to a method name",
+        "DisplayName",
+        "XUnit",
+        DiagnosticSeverity.Warning,
+        true,
+        "DisplayName contains characters that cannot be converted to a valid C# method name identifier."
+    );
+
 }

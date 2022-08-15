@@ -1,13 +1,15 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using MoreLinq.Extensions;
 
 namespace FactCheck.Common
 {
     public static class Converters
     {
         private static readonly Regex AllCapsRegex = new(@"^\p{Lu}+$", RegexOptions.Compiled);
+        private static readonly Regex SplitTextRegex = new(@"([\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Cf}]+|\p{Nd}+)", RegexOptions.Compiled);
+        private static readonly Regex ValidIdentifierRegex = new(@"^[\p{L}\p{Nl}_][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Nd}]*$", RegexOptions.Compiled);
+
         public static string CodeToText(string code)
             => string.Join(" ",
                 SplitCode(code)
@@ -18,58 +20,18 @@ namespace FactCheck.Common
                             CultureInfo.InvariantCulture.TextInfo.ToLower(chunk))
                 );
 
-        public enum NonLatinStrategy
+        public static string? TextToCode(string text)
         {
-            Skip,
-            Decline,
-            Hash
-        }
-
-        public enum LeadingDigitStrategy
-        {
-            Skip,
-            Decline,
-            SpellFirst,
-            SpellAll
-        }
-
-        public static string TextToCode(string text, NonLatinStrategy nonLatinStrategy = NonLatinStrategy.Skip, LeadingDigitStrategy leadingDigitStrategy = LeadingDigitStrategy.Skip)
-            => string.Join(
+            var code = string.Join(
                 string.Empty,
-                BreakByCodeCharacterClass(text)
+                SplitText(text)
                     .Select(CultureInfo.InvariantCulture.TextInfo.ToTitleCase)
                 );
-
-        private enum CodeCharacterClass
-        {
-            Skip,
-            Other,
-            Letter,
-            Digit,
+            return ValidIdentifierRegex.IsMatch(code) ? code : null;
         }
 
-        private static CodeCharacterClass GetCodeCharacterClass(char character)
-        {
-            if (!char.IsLetterOrDigit(character))
-            {
-                return CodeCharacterClass.Skip;
-            }
-            if (character >= 0x80)
-            {
-                return CodeCharacterClass.Other;
-            }
-            return char.IsLetter(character) ? CodeCharacterClass.Letter : CodeCharacterClass.Digit;
-        }
-
-        private static IEnumerable<string> BreakByCodeCharacterClass(string text)
-            => text.GroupAdjacent(GetCodeCharacterClass)
-                .Where(group => group.Key != CodeCharacterClass.Skip)
-                .Select(group => string.Concat(group));
-
-        private static IEnumerable<string> HandleNonLatinStrategy(this IEnumerable<string> chunks, NonLatinStrategy nonLatinStrategy)
-        {
-            return chunks.
-        }
+        public static IEnumerable<string> SplitText(string text)
+            => SplitTextRegex.Matches(text).Cast<Match>().Select(match => match.Value);
 
         public static IEnumerable<string> SplitCode(string code)
         {

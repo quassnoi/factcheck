@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using FactCheck.Analyzers.Tests.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
@@ -9,7 +10,6 @@ namespace FactCheck.Analyzers.Tests;
 public class XunitDisplayNameMismatchAnalyzerTests
 {
     private readonly string _xunitMockProjectPath = Path.Combine("MockProjects", "Xunit.MockProject");
-    private readonly string _classlibMockProjectPath = Path.Combine("MockProjects", "Classlib.MockProject");
 
     private static CSharpAnalyzerTest<XunitDisplayNameMismatchAnalyzer, XUnitVerifier> TestFactory(string code, params DiagnosticResult[] diagnosticResults)
     {
@@ -34,7 +34,7 @@ public class XunitDisplayNameMismatchAnalyzerTests
     [Fact(DisplayName = "XunitDisplayNameMismatchAnalyzer, when DisplayName matches method name, should not issue diagnostic")]
     public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic()
     {
-        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic));
+        var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic));
 
         await TestFactory(code).RunAsync();
     }
@@ -42,7 +42,7 @@ public class XunitDisplayNameMismatchAnalyzerTests
     [Fact(DisplayName = "XunitDisplayNameMismatchAnalyzer, when DisplayName does not match method name, should issue diagnostic")]
     public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameDoesNotMatchMethodNameShouldIssueDiagnostic()
     {
-        var code = await Helpers.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameDoesNotMatchMethodNameShouldIssueDiagnostic));
+        var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameDoesNotMatchMethodNameShouldIssueDiagnostic));
 
         await TestFactory(
             code,
