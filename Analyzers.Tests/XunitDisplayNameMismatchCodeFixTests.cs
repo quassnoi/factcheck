@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-namespace FactCheck;
+namespace FactCheck.Analyzers.Tests;
 
 public class XunitDisplayNameMismatchCodeFixTests
 {

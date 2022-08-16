@@ -11,10 +11,10 @@ insert_final_newline = false
 max_line_length = 180
 
 csharp_prefer_braces = true
+csharp_style_expression_bodied_methods = true
 
 resharper_convert_type_check_pattern_to_null_check_highlighting = none
 resharper_csharp_wrap_before_arrow_with_expressions = true
-resharper_csharp_style_expression_bodied_methods = true
 resharper_place_simple_blocks_on_single_line = false
 resharper_csharp_align_multiline_parameter = true
 #resharper_csharp_align_multiline_property_pattern = true

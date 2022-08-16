@@ -67,21 +67,22 @@ internal class XunitDisplayNameMismatchCodeFix : CodeFixProvider
         {
             return Task.FromResult(document);
         }
+
         var displayName = displayNameSyntax.GetDisplayName();
         if (displayName == null)
         {
             return Task.FromResult(document);
         }
+
         var newMethodName = Converters.TextToCode(displayName);
         if (newMethodName == null)
         {
             return Task.FromResult(document);
-
         }
+
         var newIdentifierToken = SyntaxFactory.Identifier(newMethodName);
 
         var newSyntaxRoot = syntaxRoot.ReplaceToken(identifierToken, newIdentifierToken);
         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
     }
-
 }
