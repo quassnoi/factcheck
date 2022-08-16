@@ -16,15 +16,15 @@ internal static class Extensions
         => semanticModel.GetSymbolInfo(attributeSyntax) is
         {
             Symbol: IMethodSymbol
-                    {
-                        MethodKind: MethodKind.Constructor,
-                        ContainingType:
-                        {
-                            ContainingAssembly.Name: Constants.AssemblyXunitCore,
-                            ContainingNamespace.Name: Constants.NamespaceAttributes,
-                            Name: var containingTypeName
-                        }
-                    }
+            {
+                MethodKind: MethodKind.Constructor,
+                ContainingType:
+                {
+                    ContainingAssembly.Name: Constants.AssemblyXunitCore,
+                    ContainingNamespace.Name: Constants.NamespaceAttributes,
+                    Name: var containingTypeName
+                }
+            }
         } && Constants.DisplayNameAttributes.Contains(containingTypeName);
 
     public static IEnumerable<AttributeSyntax> GetAttributesSupportingDisplayName(this SemanticModel semanticModel)
@@ -44,9 +44,9 @@ internal static class Extensions
         => attributeSyntax is
         {
             Parent.Parent: MethodDeclarationSyntax
-                           {
-                               Identifier: var identifier
-                           }
+            {
+                Identifier: var identifier
+            }
         }
             ? identifier
             : null;

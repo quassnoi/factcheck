@@ -3,6 +3,6 @@ namespace Xunit.MockProject;
 
 public class XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameConvertsToValidIdentifierShouldNotIssueDiagnostic
 {
-    [FactAttribute(DisplayName = "Converts to identifier")]
-    public void ConvertsToIdentifier() { }
+    [FactAttribute(DisplayName = "DisplayNameValue")]
+    public void Test() { }
 }

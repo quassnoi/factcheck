@@ -32,25 +32,29 @@ public class XunitDisplayNameUnconvertibleAnalyzerTests
         return cSharpAnalyzerTest;
     }
 
-    [Fact(DisplayName = "XunitDisplayNameUnconvertibleAnalyzer, when DisplayName converts to valid identifier, should not issue diagnostic")]
-    public async Task XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameConvertsToValidIdentifierShouldNotIssueDiagnostic()
+    [Theory(DisplayName = "XunitDisplayNameUnconvertibleAnalyzer, when DisplayName converts to valid identifier, should not issue diagnostic")]
+    [InlineData("Test")]
+    [InlineData("Slithy toves, when it is brillig, should gyre and gimble in wabe")]
+    [InlineData("Хливкие шорьки, если варкается, должны пыряться по наве")]
+    public async Task XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameConvertsToValidIdentifierShouldNotIssueDiagnostic(string displayName)
     {
-        var code = await FileHelper.LoadModule(_xunitMockProjectPath,
+        var template = await FileHelper.LoadModule(_xunitMockProjectPath,
             nameof(XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameConvertsToValidIdentifierShouldNotIssueDiagnostic));
+        var code = template.Replace("DisplayNameValue", displayName);
         await TestFactory(code).RunAsync();
     }
 
     [Theory(DisplayName = "XunitDisplayNameUnconvertibleAnalyzer, when DisplayName does not convert to valid identifier, should issue diagnostic")]
     [InlineData("12345")]
     [InlineData("___")]
-    [InlineData("")]
+    [InlineData("!@#$%^&*()")]
     public async Task XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameDoesNotConvertToValidIdentifierShouldIssueDiagnostic(string displayName)
     {
-        var code = await FileHelper.LoadModule(_xunitMockProjectPath,
+        var template = await FileHelper.LoadModule(_xunitMockProjectPath,
             nameof(XunitDisplayNameUnconvertibleAnalyzerWhenDisplayNameDoesNotConvertToValidIdentifierShouldIssueDiagnostic));
-        var replacedCode = code.Replace("DisplayNameValue", displayName);
+        var code = template.Replace("DisplayNameValue", displayName);
         await TestFactory(
-                replacedCode,
+                code,
                 Verify.Diagnostic(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible).WithLocation(6, 34))
             .RunAsync();
     }

@@ -43,21 +43,21 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
         var diagnosticNode = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
         if (diagnosticNode is not AttributeSyntax
-                                  {
-                                      Parent.Parent: MethodDeclarationSyntax
-                                                     {
-                                                         Identifier.Text: string methodName
-                                                     }
-                                  } attributeSyntax)
+            {
+                Parent.Parent: MethodDeclarationSyntax
+                {
+                    Identifier.Text: string methodName
+                }
+            } attributeSyntax)
         {
             return;
         }
 
         context.RegisterCodeFix(
             CodeAction.Create(
-                CodeFixes.FactCheck001XunitDisplayNameMissing.Title,
+                CodeFixes.FactCheck0001XunitDisplayNameMissing.Title,
                 _ => CreateFixedDocument(context.Document, syntaxRoot, attributeSyntax, methodName),
-                CodeFixes.FactCheck001XunitDisplayNameMissing.EquivalenceKey),
+                CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
             diagnostic);
     }
 
