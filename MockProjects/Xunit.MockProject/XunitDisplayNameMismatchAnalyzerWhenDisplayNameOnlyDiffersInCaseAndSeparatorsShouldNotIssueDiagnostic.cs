@@ -1,6 +1,6 @@
 namespace Xunit.MockProject;
 
-public class XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic
+public class XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic
 {
     [Fact(DisplayName = "DisplayNameValue")]
     public void TestMethodName() { }

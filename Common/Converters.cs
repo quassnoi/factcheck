@@ -9,6 +9,7 @@ public static class Converters
     private static readonly Regex AllCapsRegex = new(@"^\p{Lu}+$", RegexOptions.Compiled);
     private static readonly Regex SplitTextRegex = new(@"([\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Cf}]+|\p{Nd}+)", RegexOptions.Compiled);
     private static readonly Regex ValidIdentifierRegex = new(@"^[\p{L}\p{Nl}_][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Nd}]*$", RegexOptions.Compiled);
+    private static readonly Regex SeparatorRegex = new(@"(\W|\p{Pc})+", RegexOptions.Compiled);
 
     public static string CodeToText(string code)
         => string.Join(" ",
@@ -23,10 +24,13 @@ public static class Converters
         var code = string.Join(
             string.Empty,
             SplitText(text)
-                .Select(CultureInfo.InvariantCulture.TextInfo.ToTitleCase)
+                .Select(chunk => char.ToUpperInvariant(chunk[0]) + chunk.Substring(1))
         );
         return ValidIdentifierRegex.IsMatch(code) ? code : null;
     }
+
+    public static bool TextEqualsCode(string text, string code)
+        => TextToCode(text)?.Equals(SeparatorRegex.Replace(code, string.Empty), StringComparison.InvariantCultureIgnoreCase) ?? false;
 
     public static IEnumerable<string> SplitText(string text)
         => SplitTextRegex.Matches(text).Cast<Match>().Select(match => match.Value);

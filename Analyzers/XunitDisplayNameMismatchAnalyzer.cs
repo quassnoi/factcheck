@@ -33,22 +33,25 @@ public class XunitDisplayNameMismatchAnalyzer : DiagnosticAnalyzer
             .GetAttributesSupportingDisplayName()
             .Where(attributeSyntax => attributeSyntax.HasDisplayName());
 
-        foreach (var methodIdentifier in Mismatches(attributeSyntaxes))
+        foreach (var (methodIdentifier, displayName, methodName) in Mismatches(attributeSyntaxes))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0002XunitDisplayNameMismatch, methodIdentifier.GetLocation()));
+            context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0002XunitDisplayNameMismatch,
+                methodIdentifier.GetLocation(),
+                displayName,
+                methodName
+            ));
         }
     }
 
-    private static IEnumerable<SyntaxToken> Mismatches(IEnumerable<AttributeSyntax> attributeSyntaxes)
+    private static IEnumerable<(SyntaxToken syntaxToken, string displayName, string methodName)> Mismatches(IEnumerable<AttributeSyntax> attributeSyntaxes)
     {
         foreach (var attributeSyntax in attributeSyntaxes)
         {
             if (attributeSyntax.GetDisplayName() is string displayName
                 && attributeSyntax.GetMethodIdentifier() is SyntaxToken methodIdentifier
-                && Converters.TextToCode(displayName) is string convertedMethodName
-                && convertedMethodName != methodIdentifier.Text)
+                && !Converters.TextEqualsCode(displayName, methodIdentifier.Text))
             {
-                yield return methodIdentifier;
+                yield return (methodIdentifier, displayName, methodIdentifier.Text);
             }
         }
     }

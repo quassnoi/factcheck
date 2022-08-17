@@ -9,7 +9,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FactCheck;
 
-internal class XunitDisplayNameMismatchCodeFix : CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp)]
+public class XunitDisplayNameMismatchCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
         Diagnostics.FactCheck0002XunitDisplayNameMismatch.Id
@@ -49,37 +50,38 @@ internal class XunitDisplayNameMismatchCodeFix : CodeFixProvider
             return;
         }
 
-        context.RegisterCodeFix(
-            CodeAction.Create(
-                CodeFixes.FactCheck0002XunitDisplayNameMismatch.Title,
-                _ => CreateFixedDocument(context.Document, syntaxRoot, methodDeclarationSyntax, identifierToken),
-                CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
-            diagnostic);
-    }
-
-    private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, MethodDeclarationSyntax methodDeclarationSyntax, SyntaxToken identifierToken)
-    {
         var displayNameSyntax = methodDeclarationSyntax
             .AttributeLists
             .SelectMany(attributeList => attributeList.Attributes)
             .FirstOrDefault();
+
         if (displayNameSyntax == null)
         {
-            return Task.FromResult(document);
+            return;
         }
 
         var displayName = displayNameSyntax.GetDisplayName();
         if (displayName == null)
         {
-            return Task.FromResult(document);
+            return;
         }
 
         var newMethodName = Converters.TextToCode(displayName);
         if (newMethodName == null)
         {
-            return Task.FromResult(document);
+            return;
         }
 
+        context.RegisterCodeFix(
+            CodeAction.Create(
+                string.Format(CodeFixes.FactCheck0002XunitDisplayNameMismatch.Title, newMethodName),
+                _ => CreateFixedDocument(context.Document, syntaxRoot, identifierToken, newMethodName),
+                CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
+            diagnostic);
+    }
+
+    private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, SyntaxToken identifierToken, string newMethodName)
+    {
         var newIdentifierToken = SyntaxFactory.Identifier(newMethodName);
 
         var newSyntaxRoot = syntaxRoot.ReplaceToken(identifierToken, newIdentifierToken);

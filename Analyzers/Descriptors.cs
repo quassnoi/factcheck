@@ -7,7 +7,7 @@ internal static class Diagnostics
     public static readonly DiagnosticDescriptor FactCheck0001XunitDisplayNameMissing = Factory(
         "FACTCHECK0001",
         "DisplayName missing",
-        "DisplayName",
+        "DisplayName attribute is missing",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,
@@ -16,8 +16,8 @@ internal static class Diagnostics
 
     public static readonly DiagnosticDescriptor FactCheck0002XunitDisplayNameMismatch = Factory(
         "FACTCHECK0002",
-        "The method name does not match DisplayName",
-        "DisplayName",
+        "DisplayName mismatch",
+        "DisplayName \"{0}\" does not match method name {1}",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,

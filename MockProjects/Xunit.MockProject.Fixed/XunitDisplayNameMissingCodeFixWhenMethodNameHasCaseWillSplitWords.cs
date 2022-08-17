@@ -1,6 +1,6 @@
 namespace Xunit.MockProject;
 
-public class XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords
+public class XunitDisplayNameMissingCodeFixWhenMethodNameHasCaseWillSplitWords
 {
     [Fact(DisplayName = "DisplayNameValue")]
     public void TestMethodName() { }

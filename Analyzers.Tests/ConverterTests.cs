@@ -10,7 +10,7 @@ public class ConverterTests
     [InlineData("Initcap", new[] { "Initcap" })]
     [InlineData("UPPERCASE", new[] { "UPPERCASE" })]
     [InlineData("", new string[] { })]
-    public void SplitCodeWhenGivenCodeSplits(string input, IEnumerable<string> expectedOutput)
+    public void SplitCodeWhenGivenCodeShouldSplit(string input, IEnumerable<string> expectedOutput)
     {
         var actualOutput = Converters.SplitCode(input).ToList();
         actualOutput.Should().Equal(expectedOutput);
@@ -28,5 +28,19 @@ public class ConverterTests
     {
         var actualOutput = Converters.SplitText(input);
         actualOutput.Should().Equal(expectedOutput);
+    }
+
+    [Theory(DisplayName = "CodeToText, when given text, should convert to code")]
+    [InlineData("", null)]
+    [InlineData("_?^&*", null)]
+    [InlineData("Two Words", "TwoWords")]
+    [InlineData("lowercase words", "LowercaseWords")]
+    [InlineData("PascalCase preserves case", "PascalCasePreservesCase")]
+    [InlineData("snake_case_preserves_case", "SnakeCasePreservesCase")]
+    [InlineData("UPPERCASE preserves case", "UPPERCASEPreservesCase")]
+    public void CodeToTextWhenGivenTextShouldConvertToCode(string text, string? expectedCode)
+    {
+        var actualCode = Converters.TextToCode(text);
+        Assert.Equal(expectedCode, actualCode);
     }
 }

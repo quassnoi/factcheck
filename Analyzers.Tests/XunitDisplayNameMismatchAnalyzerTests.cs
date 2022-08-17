@@ -32,10 +32,30 @@ public class XunitDisplayNameMismatchAnalyzerTests
         return cSharpAnalyzerTest;
     }
 
-    [Fact(DisplayName = "XunitDisplayNameMismatchAnalyzer, when DisplayName matches method name, should not issue diagnostic")]
-    public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic()
+    [Theory(DisplayName = "XunitDisplayNameMismatchAnalyzer, when DisplayName matches method name, should not issue diagnostic")]
+    [InlineData("System, when condition, should behave", "SystemWhenConditionShouldBehave")]
+    [InlineData("PascalCase, when condition, should behave", "PascalCaseWhenConditionShouldBehave")]
+    [InlineData("System, when camelCaseCondition, should behave", "SystemWhenCamelCaseConditionShouldBehave")]
+    [InlineData("System, when snake_case_condition, should behave", "SystemWhenSnakeCaseConditionShouldBehave")]
+    public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic(string displayName, string methodName)
     {
-        var code = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic));
+        var template = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameMatchesMethodNameShouldNotIssueDiagnostic));
+        var code = template
+            .Replace("DisplayNameValue", displayName)
+            .Replace("TestMethodName", methodName);
+
+        await TestFactory(code).RunAsync();
+    }
+
+    [Theory(DisplayName = "XunitDisplayNameMismatchAnalyzer, when DisplayName only differs in case and separators, should not issue diagnostic")]
+    [InlineData("System, when condition, should behave", "systemwhenconditionshouldbehave")]
+    [InlineData("System, when condition, should behave", "_system_when_condition_should_behave")]
+    public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic(string displayName, string methodName)
+    {
+        var template = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic));
+        var code = template
+            .Replace("DisplayNameValue", displayName)
+            .Replace("TestMethodName", methodName);
 
         await TestFactory(code).RunAsync();
     }
@@ -47,7 +67,10 @@ public class XunitDisplayNameMismatchAnalyzerTests
 
         await TestFactory(
                 code,
-                Verify.Diagnostic(Diagnostics.FactCheck0002XunitDisplayNameMismatch).WithLocation(6, 17))
+                Verify.Diagnostic(Diagnostics.FactCheck0002XunitDisplayNameMismatch)
+                    .WithLocation(6, 17)
+                    .WithArguments("System, when condition, should behave", "Test")
+            )
             .RunAsync();
     }
 }

@@ -8,7 +8,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FactCheck;
 
-internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp)]
+public class XunitDisplayNameMissingCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
         Diagnostics.FactCheck0001XunitDisplayNameMissing.Id
@@ -53,15 +54,17 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
             return;
         }
 
+        var newDisplayName = Converters.CodeToText(methodName);
+
         context.RegisterCodeFix(
             CodeAction.Create(
                 CodeFixes.FactCheck0001XunitDisplayNameMissing.Title,
-                _ => CreateFixedDocument(context.Document, syntaxRoot, attributeSyntax, methodName),
+                _ => CreateFixedDocument(context.Document, syntaxRoot, attributeSyntax, newDisplayName),
                 CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
             diagnostic);
     }
 
-    private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, AttributeSyntax attributeSyntax, string methodName)
+    private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, AttributeSyntax attributeSyntax, string newDisplayName)
     {
         var newAttributeSyntax = attributeSyntax.AddArgumentListArguments(
             SyntaxFactory.AttributeArgument(
@@ -72,7 +75,7 @@ internal class XunitDisplayNameMissingCodeFix : CodeFixProvider
                 null,
                 SyntaxFactory.LiteralExpression(
                     SyntaxKind.StringLiteralExpression,
-                    SyntaxFactory.Literal(Converters.CodeToText(methodName))
+                    SyntaxFactory.Literal(newDisplayName)
                 )
             )
         );

@@ -62,11 +62,11 @@ public class XunitDisplayNameMissingCodeFixTests
     [InlineData("snake_case", "Snake case")]
     [InlineData("camelPascal_snakeMixed", "Camel pascal snake mixed")]
     [InlineData("ALLCapsPreserved", "ALL caps preserved")]
-    public async Task XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords(string testMethodName, string displayNameValue)
+    public async Task XunitDisplayNameMissingCodeFixWhenMethodNameHasCaseWillSplitWords(string testMethodName, string displayNameValue)
     {
         var (rawTestCode, rawFixedCode) = await (
-            FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords)),
-            FileHelper.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameIsCamelCaseWillSplitWords))
+            FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameHasCaseWillSplitWords)),
+            FileHelper.LoadModule(_xunitMockProjectFixedPath, nameof(XunitDisplayNameMissingCodeFixWhenMethodNameHasCaseWillSplitWords))
         );
 
         var testCode = rawTestCode.Replace("TestMethodName", testMethodName);
