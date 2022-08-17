@@ -72,18 +72,17 @@ public class XunitDisplayNameMismatchCodeFix : CodeFixProvider
             return;
         }
 
-        context.RegisterCodeFix(
-            CodeAction.Create(
-                string.Format(CodeFixes.FactCheck0002XunitDisplayNameMismatch.Title, newMethodName),
+        var codeAction = CodeAction.Create(
+                string.Format("Rename to {0}", newMethodName),
                 _ => CreateFixedDocument(context.Document, syntaxRoot, identifierToken, newMethodName),
-                CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
-            diagnostic);
+                nameof(XunitDisplayNameMismatchCodeFix));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 
     private static Task<Document> CreateFixedDocument(Document document, SyntaxNode syntaxRoot, SyntaxToken identifierToken, string newMethodName)
     {
         var newIdentifierToken = SyntaxFactory.Identifier(newMethodName);
-
         var newSyntaxRoot = syntaxRoot.ReplaceToken(identifierToken, newIdentifierToken);
         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
     }

@@ -33,20 +33,29 @@ public class XunitDisplayNameUnconvertibleAnalyzer : DiagnosticAnalyzer
             .GetAttributesSupportingDisplayName()
             .Where(attributeSyntax => attributeSyntax.HasDisplayName());
 
-        foreach (var literalExpressionSyntax in Unconvertible(attributeSyntaxes))
+        foreach (var (literalExpressionSyntax, displayName) in Unconvertible(attributeSyntaxes))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible, literalExpressionSyntax.GetLocation()));
+            context.ReportDiagnostic(
+                Diagnostic.Create(
+                    Diagnostics.FactCheck0003XunitDisplayNameUnconvertible,
+                    literalExpressionSyntax.GetLocation(),
+                    displayName
+                )
+            );
         }
     }
 
-    private static IEnumerable<LiteralExpressionSyntax> Unconvertible(IEnumerable<AttributeSyntax> attributeSyntaxes)
+    private static IEnumerable<(LiteralExpressionSyntax literalExpressionSyntax, string? displayName)> Unconvertible(IEnumerable<AttributeSyntax> attributeSyntaxes)
     {
         foreach (var attributeSyntax in attributeSyntaxes)
         {
-            if (attributeSyntax.GetDisplayNameExpression() is LiteralExpressionSyntax literalExpressionSyntax
-                && (literalExpressionSyntax.GetDisplayName() is not string displayName || Converters.TextToCode(displayName) is null))
+            if (attributeSyntax.GetDisplayNameExpression() is LiteralExpressionSyntax literalExpressionSyntax)
             {
-                yield return literalExpressionSyntax;
+                var displayName = literalExpressionSyntax.GetDisplayName();
+                if (displayName == null || Converters.TextToCode(displayName) is null)
+                {
+                    yield return (literalExpressionSyntax, displayName);
+                }
             }
         }
     }

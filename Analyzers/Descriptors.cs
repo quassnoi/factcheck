@@ -21,13 +21,13 @@ internal static class Diagnostics
         "XUnit",
         DiagnosticSeverity.Warning,
         true,
-        "The test method name does not match the DisplayName argument."
+        "The test method name does not match the value of DisplayName."
     );
 
     public static readonly DiagnosticDescriptor FactCheck0003XunitDisplayNameUnconvertible = Factory(
         "FACTCHECK0003",
-        "DisplayName cannot be converted to a method name",
-        "DisplayName",
+        "DisplayName unconvertible",
+        "DisplayName \"{0}\" cannot be converted to a valid identifier",
         "XUnit",
         DiagnosticSeverity.Warning,
         true,

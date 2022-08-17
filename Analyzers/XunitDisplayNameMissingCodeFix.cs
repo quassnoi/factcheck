@@ -58,9 +58,9 @@ public class XunitDisplayNameMissingCodeFix : CodeFixProvider
 
         context.RegisterCodeFix(
             CodeAction.Create(
-                CodeFixes.FactCheck0001XunitDisplayNameMissing.Title,
+                string.Format("Add (DisplayName = \"{0}\")", newDisplayName),
                 _ => CreateFixedDocument(context.Document, syntaxRoot, attributeSyntax, newDisplayName),
-                CodeFixes.FactCheck0001XunitDisplayNameMissing.EquivalenceKey),
+                nameof(XunitDisplayNameMissingCodeFix)),
             diagnostic);
     }
 
