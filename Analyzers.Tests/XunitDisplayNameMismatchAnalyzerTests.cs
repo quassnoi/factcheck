@@ -52,7 +52,8 @@ public class XunitDisplayNameMismatchAnalyzerTests
     [InlineData("System, when condition, should behave", "_system_when_condition_should_behave")]
     public async Task XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic(string displayName, string methodName)
     {
-        var template = await FileHelper.LoadModule(_xunitMockProjectPath, nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic));
+        var template = await FileHelper.LoadModule(_xunitMockProjectPath,
+            nameof(XunitDisplayNameMismatchAnalyzerWhenDisplayNameOnlyDiffersInCaseAndSeparatorsShouldNotIssueDiagnostic));
         var code = template
             .Replace("DisplayNameValue", displayName)
             .Replace("TestMethodName", methodName);

@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis;
-
 namespace FactCheck;
 
 internal readonly record struct CodeFixData(string Title, string EquivalenceKey);
