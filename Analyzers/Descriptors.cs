@@ -9,7 +9,7 @@ internal static class Diagnostics
         "DisplayName missing",
         "DisplayName attribute is missing",
         "XUnit",
-        DiagnosticSeverity.Warning,
+        DiagnosticSeverity.Info,
         true,
         "[Fact] and [Theory] attributes should have a DisplayName argument."
     );
@@ -19,7 +19,7 @@ internal static class Diagnostics
         "DisplayName mismatch",
         "DisplayName \"{0}\" does not match method name {1}",
         "XUnit",
-        DiagnosticSeverity.Warning,
+        DiagnosticSeverity.Info,
         true,
         "The test method name does not match the value of DisplayName."
     );
@@ -29,7 +29,7 @@ internal static class Diagnostics
         "DisplayName unconvertible",
         "DisplayName \"{0}\" cannot be converted to a valid identifier",
         "XUnit",
-        DiagnosticSeverity.Warning,
+        DiagnosticSeverity.Info,
         true,
         "DisplayName contains characters that cannot be converted to a valid C# method name identifier."
     );

@@ -55,7 +55,9 @@ public class XunitDisplayNameUnconvertibleAnalyzerTests
         var code = template.Replace("DisplayNameValue", displayName);
         await TestFactory(
                 code,
-                Verify.Diagnostic(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible).WithLocation(6, 34))
+                Verify.Diagnostic(Diagnostics.FactCheck0003XunitDisplayNameUnconvertible)
+                    .WithLocation(6, 34)
+                    .WithArguments(displayName))
             .RunAsync();
     }
 }
