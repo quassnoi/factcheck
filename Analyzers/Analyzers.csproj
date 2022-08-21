@@ -17,7 +17,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="4.2.0" />
     <!-- TODO: morelinq is only consumed by the dependencies. Figure out how to pull transitive dependencies into a NuGET package -->
-    <!-- <PackageReference Include="morelinq" Version="3.3.2" /> -->
+    <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="NuGetizer" Version="0.8.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
