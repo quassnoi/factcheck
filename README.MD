@@ -2,7 +2,7 @@
 
 FactCheck is a Roslyn analyzer that enforces human-readable unit test descriptions in .NET projects
 
-## Why do I need it?
+# Why
 
 It makes your unit test reports look nicer.
 
@@ -42,13 +42,7 @@ The following Tests are available:
 
 ```
 
-## How do I install it?
-
-```bash
-dotnet add package FactCheck
-```
-
-## How does it work?
+# What
 
 
 FactCheck checks that DisplayName attribute is set on all fact and theory methods.
@@ -57,7 +51,7 @@ FactCheck checks that DisplayName attribute is set on all fact and theory method
 
 If the attribute is not set, it displays a hint and offers a fix to set the attribute from the method name:
 
-![](.media/display-name-fix.png)
+![](https://raw.githubusercontent.com/quassnoi/factcheck/master/.media/display-name-fix.png)
 
 
 , or using the CLI:
@@ -70,11 +64,19 @@ dotnet format analyzers --diagnostics=FACTCHECK0001
 
 If the method name does not match the human-readable name, FactCheck displays a hint and offers a fix to rename the method:
 
-![](.media/method-name-fix.png)
+![](https://raw.githubusercontent.com/quassnoi/factcheck/master/.media/method-name-fix.png)
 
 , or using the CLI:
 
 ```sh
 dotnet format analyzers --diagnostics=FACTCHECK0002
+```
+
+# How
+
+In your test project, run:
+
+```bash
+dotnet add package FactCheck
 ```
 
