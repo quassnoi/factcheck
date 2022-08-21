@@ -73,9 +73,9 @@ public class XunitDisplayNameMismatchCodeFix : CodeFixProvider
         }
 
         var codeAction = CodeAction.Create(
-                string.Format("Rename to {0}", newMethodName),
-                _ => CreateFixedDocument(context.Document, syntaxRoot, identifierToken, newMethodName),
-                nameof(XunitDisplayNameMismatchCodeFix));
+            $"Rename to {newMethodName}",
+            _ => CreateFixedDocument(context.Document, syntaxRoot, identifierToken, newMethodName),
+            nameof(XunitDisplayNameMismatchCodeFix));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }
