@@ -16,6 +16,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="4.2.0" />
+    <PackageReference Include="NuGetizer" Version="0.8.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(OutputPath)\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="all"/>
   </ItemGroup>
 
   <PropertyGroup>
@@ -43,15 +43,22 @@
 
   <PropertyGroup>
     <PackageId>FactCheck</PackageId>
-    <PackageVersion>1.0.0.0</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <DevelopmentDependency>true</DevelopmentDependency>
     <Authors>Alex Bolenok</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Human-readable description of unit tests</Description>
+    <Description>Human-readable descriptions of unit tests</Description>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackageTags>xUnit Roslyn Diagnostic Analyzer DotnetAnalyzers UnitTests</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/quassnoi/factcheck</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/quassnoi/factcheck</RepositoryUrl>
+    <PackageReadmeFile>README.MD</PackageReadmeFile>
+    <PackFolder>analyzers\dotnet\cs</PackFolder>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageFile Include="..\README.MD" PackagePath="\README.MD" />
+  </ItemGroup>
 </Project>

@@ -35,7 +35,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <Analyzer Include="..\Analyzers\bin\Release\netstandard2.0\*.dll"/>
   </ItemGroup>
 
   <ItemGroup>

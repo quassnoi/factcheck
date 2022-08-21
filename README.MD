@@ -6,7 +6,7 @@ FactCheck is a Roslyn analyzer that enforces human-readable unit test descriptio
 
 It makes your unit test reports look nicer.
 
-In xUnit, the most popular .NET test framework, the attributes Fact and Theory accept the optional argument DisplayName:
+In xUnit, the most popular .NET test framework, the attributes `[Fact]` and `[Theory]` accept the optional argument `DisplayName`:
 
 ```csharp
 [Fact(DisplayName = "System Under Test, when Condition is present, should exhibit Behavior")]
@@ -23,13 +23,13 @@ Most IDE's and test reporting tools honor this attribute and use it to report pa
 It works in Visual Studio, Rider, Bamboo test parser, `dotnet test` CLI command, etc.:
 
 ```sh
-# dotnet test --list-tests
+$ dotnet test --list-tests
 
 Microsoft (R) Test Execution Command Line Tool Version 17.3.0 (x64)
 Copyright (c) Microsoft Corporation.  All rights reserved.
 
 The following Tests are available:
-     XunitDisplayNameMismatchAnalyzer, when DisplayName does not match method name, should issue diagnostic
+    XunitDisplayNameMismatchAnalyzer, when DisplayName does not match method name, should issue diagnostic
     XunitDisplayNameMissingAnalyzer, when DisplayName is provided on Fact, should not issue diagnostic
     XunitDisplayNameMissingAnalyzer, when qualified name is used, should not issue diagnostic
     XunitDisplayNameMissingAnalyzer, when attribute string is not trimmed, should not issue diagnostic
@@ -38,6 +38,7 @@ The following Tests are available:
     SplitCode, when given code, should split(input: "lowercase", expectedOutput: ["lowercase"])
     SplitCode, when given code, should split(input: "Initcap", expectedOutput: ["Initcap"])
     SplitCode, when given code, should split(input: "UPPERCASE", expectedOutput: ["UPPERCASE"])
+    …
 
 ```
 

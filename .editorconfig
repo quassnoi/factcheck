@@ -17,7 +17,6 @@ resharper_convert_type_check_pattern_to_null_check_highlighting = none
 resharper_csharp_wrap_before_arrow_with_expressions = true
 resharper_place_simple_blocks_on_single_line = false
 resharper_csharp_align_multiline_parameter = true
-#resharper_csharp_align_multiline_property_pattern = true
 
 [*.cs]
 indent_size = 4
