@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>FactCheck.Analyzers.Tests</RootNamespace>
@@ -38,11 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MockProjects Include="..\MockProjects\**\*.cs" Exclude="..\MockProjects\**\bin\**\*.*;..\MockProjects\**\obj\**\*.*" />
+    <MockProjects Include="..\MockProjects\**\*.cs"
+      Exclude="..\MockProjects\**\bin\**\*.*;..\MockProjects\**\obj\**\*.*" />
   </ItemGroup>
 
   <Target Name="MockProjects" AfterTargets="Build">
-    <Copy SourceFiles="@(MockProjects)" DestinationFolder="$(OutputPath)\MockProjects\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(MockProjects)"
+      DestinationFolder="$(OutputPath)\MockProjects\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <PropertyGroup>

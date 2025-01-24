@@ -11,14 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IsExternalInit" Version="1.0.2">
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.2.0" />
-    <!-- TODO: morelinq is only consumed by the dependencies. Figure out how to pull transitive dependencies into a NuGET package -->
-    <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="NuGetizer" Version="0.8.0">
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="[4,5)" />
+    <!-- TODO: morelinq is only consumed by the dependencies. Figure out how to pull transitive
+    dependencies into a NuGET package -->
+    <PackageReference Include="morelinq" Version="[4,5)" />
+    <PackageReference Include="NuGetizer" Version="[1,2)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -45,7 +46,7 @@
 
   <PropertyGroup>
     <PackageId>FactCheck</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <DevelopmentDependency>true</DevelopmentDependency>
     <Authors>Alex Bolenok</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -58,6 +59,7 @@
     <PackageReadmeFile>README.MD</PackageReadmeFile>
     <PackFolder>analyzers\dotnet\cs</PackFolder>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <ItemGroup>
